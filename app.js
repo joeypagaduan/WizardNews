@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
           <div class='news-item'>
             <p>
               <span class="news-position">${post.id}. ▲</span>
-              ${post.title}
+              <a href="/posts/${post.id}">${post.title}</a>
               <small>(by ${post.name})</small>
             </p>
             <small class="news-info">
@@ -37,6 +37,32 @@ app.get("/", (req, res) => {
   </html>`
 
   res.send(html);
+});
+
+app.get('/posts/:id', (req, res) => {
+  const id = req.params.id;
+  const post = postBank.find(id);
+  const postDetails = 
+    `<div class='news-item'>
+      <header><img src="/logo.png"/>Wizard News</header>
+      <p>
+        <span class="news-position">${post.id}. ▲</span>
+        ${post.title}
+        <small>(by ${post.name})</small>
+      </p>
+      <p>
+        <strong>${post.content}</strong>
+      </p>
+      <small class="news-info">
+        ${post.upvotes} upvotes | ${post.date}
+      </small>
+    </div>`
+
+  if (!post.id) {
+    throw new Error('Page Not Found!');
+  } else {
+    res.send(postDetails);
+  }
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
