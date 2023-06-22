@@ -22,6 +22,21 @@ app.get('/', (req, res) => {
 app.get('/posts/:id', (req, res) => {
   const id = req.params.id;
   const post = postBank.find(id);
+  const postDetails = 
+    `<div class='news-item'>
+      <header><img src="/logo.png"/>Wizard News</header>
+      <p>
+        <span class="news-position">${post.id}. ▲</span>
+        ${post.title}
+        <small>(by ${post.name})</small>
+      </p>
+      <p>
+        <strong>${post.content}</strong>
+      </p>
+      <small class="news-info">
+        ${post.upvotes} upvotes | ${timeAgo(post.date)}
+      </small>
+    </div>`
 
   res.send(postDetails(post));
 });
